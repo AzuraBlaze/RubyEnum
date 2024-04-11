@@ -2,23 +2,36 @@
 class Enum
 
   DEFAULT = Object.new
-  ID = Object.new
 
   def self.new(constants)
     enum_subclass = Class.new(Enum) do
+      class << self
+        include Enumerable
 
-      def self.enum_symbols
-        constants(false)
+        def enum_symbols
+          constants(false)
+        end
+
+        def enum_values
+          enum_symbols.map { |symbol| const_get(symbol) }
+        end
+
+        def enum_constants
+          enum_symbols.zip(enum_values)
+        end
+
+        def each
+          return "No block given" unless block_given?
+  
+          enum_values.each { |value| yield(value) }
+        end
+
+        def each_pair
+          return "No block given" unless block_given?
+  
+          enum_constants.each { |symbol, value| yield(symbol, value) }
+        end
       end
-
-      def self.enum_values
-        enum_symbols.map { |symbol| const_get(symbol) }
-      end
-
-      def self.enum_constants
-        enum_symbols.zip(enum_values)
-      end
-
     end
 
     constants.each_with_index do |constant, i|
