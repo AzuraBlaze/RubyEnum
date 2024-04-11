@@ -35,3 +35,11 @@ puts
 
 puts "Color::PURPLE ==> #{Color::PURPLE}"
 puts "Colour::VIOLET ==> #{Colour::VIOLET}"
+
+puts
+
+Color.each_pair { |name, value| puts "#{name} is #{value.inspect}" }
+
+puts
+
+Colour.each_pair { |name, value| puts "#{name} is #{value.inspect}" }
